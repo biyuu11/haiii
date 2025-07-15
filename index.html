@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.min.js"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #fffafc;
+      }
+      .gallery img {
+        transition: transform 0.3s ease;
+      }
+      .gallery img:hover {
+        transform: scale(1.05);
+      }
+      .photo-frame {
+        border: 6px solid #fcddec;
+        border-radius: 20px;
+        padding: 4px;
+        background: #fff0f5;
+        box-shadow: 0 4px 10px rgba(255, 182, 193, 0.4);
+      }
+      .floating-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        background-color: #ec4899; /* Pink-500 */
+        color: white;
+        padding: 12px 24px;
+        border-radius: 9999px; /* Full rounded */
+        font-weight: 600; /* Semibold */
+        box-shadow: 0 4px 10px rgba(236, 72, 153, 0.4); /* Shadow for floating effect */
+        transition: background-color 0.3s ease;
+      }
+      .floating-button:hover {
+        background-color: #db2777; /* Pink-600 */
+      }
+      .note-popup {
+        position: fixed;
+        top: 20%;
+        right: 20px;
+        z-index: 1001;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        display: none; /* Hidden by default */
+      }
+      .close-button {
+        background-color: #ec4899;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body class="text-gray-800">
+    <!-- Password Screen -->
+    <div
+      id="passwordScreen"
+      class="fixed inset-0 bg-[#fbe1eb] flex items-center justify-center z-50"
+    >
+      <div
+        class="bg-white shadow-xl rounded-lg p-8 max-w-sm w-full text-center"
+      >
+        <div class="text-pink-500 mb-4">
+          <i data-lucide="lock" class="mx-auto w-8 h-8"></i>
+        </div>
+        <h2 class="text-2xl font-semibold mb-2">Private Access</h2>
+        <p class="mb-4 text-sm text-gray-500">
+          Only for the birthday person 💌
+        </p>
+        <input
+          type="password"
+          id="passwordInput"
+          placeholder="Enter password"
+          class="w-full mb-3 px-4 py-2 border border-pink-200 rounded"
+        />
+        <button
+          onclick="checkPassword()"
+          class="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-full font-semibold"
+        >
+          Unlock
+        </button>
+        <p id="errorMsg" class="text-red-500 text-sm mt-2 hidden">
+          Wrong password, try again 💭
+        </p>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="hidden">
+      <!-- Header -->
+      <header
+        class="text-center py-10 bg-gradient-to-br from-[#ffdbe9] to-[#ffeef3]"
+      >
+        <h1 class="text-4xl font-bold text-pink-600 mb-2">
+          Happy Birthday! 🎂
+        </h1>
+        <p class="text-lg text-gray-600">
+          To the one who had a big dream!! 💖
+        </p>
+        <button
+          onclick="launchConfetti()"
+          class="mt-4 px-4 py-2 bg-pink-500 text-white rounded-full text-sm"
+        >
+          srry if i still try to reach u
+        </button>
+      </header>
+
+      <!-- Notes -->
+      <section class="py-10 bg-pink-50 px-4">
+        <h2 class="text-2xl font-semibold text-center text-pink-600 mb-6">
+          Love Notes 💌
+        </h2>
+        <div class="max-w-2xl mx-auto space-y-4">
+          <div class="bg-white rounded-lg p-6 shadow">
+            <h3 class="text-xl font-bold mb-2 text-pink-500">To You,</h3>
+            <p class="text-gray-700">
+              haii halloww kakk!!
+              happy birthday! wish u all the best kak, semoga kamu sehat terus, dilancarkan segalanya ya kak. semoga cepet selesai..
+            </p>
+            <p class="text-gray-700">
+              kak, aku kangen bgt, maaf ggra aku kamu dipindah ke semarang, jdi kita gabisa ketemu lgi
+              aku gtau klo aku ngefollow igmu, maapin aku yaa kak
+              mo gimanapun aku gabisa lupain kamu kak, aku masi berharap kamu balik. engga sekarang, nanti.. klo kita udh sama² selesai. cari aku lagi ya? no aku masi sama, ig aku masi sama. gabakal aku ganti
+            </p>
+            <p class="text-gray-700">
+              jangan nikah dulu yaa banh
+              minta tolong jangan nikah dulu, tunggu aku jadi dulu.. cari aku, cari restu dri mamamu lgi. aku yakin mamamu kaya gitu karna ga pengen kamu gugur lgi, gugur yahh bukan gagal :p
+              gaada anak yg gagal banh.
+            </p>
+            <p class="text-gray-700">
+              gamww ngetik yg panjang² takut ngeganggu, intinya aku minta maaf banh, aku selalu doain yg terbaik buat kamu kak! semangat terus ya!!^^
+            </p>
+          </div>
+          <div class="bg-white rounded-lg p-6 shadow">
+            <h3 class="text-xl font-bold mb-2 text-pink-500">
+              Things I Love About You:
+            </h3>
+            <ol class="list-disc list-inside text-gray-700 space-y-1">
+              <li>I love your smile</li>
+              <li>I love the way you laugh</li>
+              <li>I love the way you look at me</li>
+              <li>I love how you make me feel safe</li>
+              <li>I love your silly jokes</li>
+              <li>I love your hugs</li>
+              <li>I love how patient you are</li>
+              <li>I love how you never give up</li>
+              <li>I love the way you hold my hand</li>
+              <li>I love your voice</li>
+              <li>I love our late-night talks</li>
+              <li>I love your playfulness</li>
+              <li>and a lot of things that i cant even say it.</li>
+              <li>Just... everything!</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- Playlist -->
+      <section class="py-10 px-4">
+        <h2 class="text-2xl font-semibold text-center text-pink-600 mb-6">
+          Playlist 🎵
+        </h2>
+        <div class="max-w-xl mx-auto rounded-lg overflow-hidden shadow">
+          <iframe
+            style="border-radius: 12px"
+            src="https://open.spotify.com/embed/playlist/0G8TcIPCFQCoY8IK3zxozH?utm_source=generator&theme=0"
+            width="100%"
+            height="352"
+            frameborder="0"
+            allowfullscreen
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+          ></iframe>
+        </div>
+      </section>
+
+      <!-- Gallery -->
+      <section class="py-10 px-4">
+        <h2 class="text-2xl font-semibold text-center text-pink-600 mb-6">
+          Photo of me incase you miss me?? 📸
+        </h2>
+        <div class="grid grid-cols-3 gap-4 max-w-5xl mx-auto gallery">
+          <div class="photo-frame">
+            <img
+              src="img/1.jpeg"
+              class="rounded-lg w-full h-auto object-contain"
+            />
+          </div>
+          <div class="photo-frame">
+            <img
+              src="img/2.jpeg"
+              class="rounded-lg w-full h-auto object-contain"
+            />
+          </div>
+          <div class="photo-frame">
+            <img
+              src="img/3.jpeg"
+              class="rounded-lg w-full h-auto object-contain"
+            />
+          </div>
+          <div class="photo-frame">
+            <img
+              src="img/4.jpeg"
+              class="rounded-lg w-full h-auto object-contain"
+            />
+          </div>
+          <div class="photo-frame">
+            <img
+              src="img/5.jpeg"
+              class="rounded-lg w-full h-auto object-contain"
+            />
+          </div>
+          <div class="photo-frame">
+            <img
+              src="img/6.jpeg"
+              class="rounded-lg w-full h-auto object-contain"
+            />
+          </div>
+          <div class="photo-frame">
+            <img
+              src="img/7.jpeg"
+              class="rounded-lg w-full h-auto object-contain"
+            />
+          </div>
+          <div class="photo-frame">
+            <img
+              src="img/8.jpeg"
+              class="rounded-lg w-full h-auto object-contain"
+            />
+          </div>
+          <div class="photo-frame">
+            <img
+              src="img/9.jpeg"
+              class="rounded-lg w-full h-auto object-contain"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- Games -->
+      <section class="py-10 px-4 bg-pink-50">
+        <h2 class="text-2xl font-semibold text-center text-pink-600 mb-6">
+          Just a random silly games 🎲
+        </h2>
+        <div class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow space-y-4">
+          <h3 class="font-semibold text-lg">Love Calculator 💖</h3>
+          <input
+            type="text"
+            id="yourName"
+            placeholder="Your Name"
+            class="w-full px-3 py-2 border rounded"
+          />
+          <input
+            type="text"
+            id="partnerName"
+            placeholder="Partner's Name"
+            class="w-full px-3 py-2 border rounded"
+          />
+          <button
+            onclick="calculateLove()"
+            class="w-full bg-pink-500 text-white py-2 rounded"
+          >
+            Calculate Love!
+          </button>
+          <div
+            id="loveResult"
+            class="mt-3 text-center font-bold text-pink-600"
+          ></div>
+        </div>
+        <div
+          class="max-w-xl mx-auto bg-white p-6 mt-6 rounded-lg shadow space-y-4"
+        >
+          <h3 class="font-semibold text-lg">Memory Game 🧠</h3>
+          <div id="memoryGame" class="grid grid-cols-4 gap-2"></div>
+          <button
+            onclick="startMemoryGame()"
+            class="w-full bg-pink-500 text-white py-2 rounded"
+          >
+            Start Memory Game!
+          </button>
+          <div
+            id="memoryGameResult"
+            class="mt-3 text-center font-bold text-pink-600"
+          ></div>
+        </div>
+      </section>
+
+      <!-- Floating Button for Notes -->
+      <button onclick="toggleNoteForm()" class="floating-button">
+        Kirim Pesan ❤️
+      </button>
+
+      <!-- Notes for Me Popup -->
+      <div id="notePopup" class="note-popup">
+        <h2 class="text-2xl font-semibold text-center text-pink-600 mb-6">
+          Write a Note for Me ✍️
+        </h2>
+        <!-- Form untuk Kirim Pesan -->
+        <form id="noteForm" onsubmit="submitMessage(event)">
+          <input
+            type="text"
+            id="nama"
+            placeholder="Nama kamu"
+            required
+            class="w-full px-4 py-2 border rounded"
+          />
+          <textarea
+            id="pesan"
+            placeholder="Pesanmu..."
+            required
+            class="w-full px-4 py-2 border rounded"
+          ></textarea>
+          <button
+            type="submit"
+            class="bg-pink-500 text-white py-2 px-4 rounded w-full"
+          >
+            Kirim Pesan ❤️
+          </button>
+        </form>
+        <button onclick="closeNotePopup()" class="close-button mt-4">
+          Close
+        </button>
+      </div>
+
+      <!-- Footer -->
+      <footer class="bg-pink-100 text-center py-6">
+        <p class="text-sm text-pink-600">Made with ❤️ just for you</p>
+      </footer>
+    </div>
+
+    <script>
+      lucide.createIcons();
+
+      function checkPassword() {
+        const input = document.getElementById("passwordInput").value;
+        const correct = "2008";
+        const err = document.getElementById("errorMsg");
+        if (input === correct) {
+          document.getElementById("passwordScreen").classList.add("hidden");
+          document.getElementById("mainContent").classList.remove("hidden");
+          launchConfetti();
+        } else {
+          err.classList.remove("hidden");
+        }
+      }
+
+      function calculateLove() {
+        const name = document.getElementById("yourName").value.trim();
+        const partner = document.getElementById("partnerName").value.trim();
+        if (!name || !partner) return alert("Please enter both names!");
+        
+        const lowerName = (name + partner).toLowerCase();
+        if (lowerName.includes("bel")) {
+          document.getElementById(
+            "loveResult"
+          ).textContent = `${name} & ${partner}, your love score is 99.99999% 💖`;
+          return;
+        }
+
+        const percent = Math.floor(50 + Math.random() * 50);
+        document.getElementById(
+          "loveResult"
+        ).textContent = `${name} & ${partner}, your love score is ${percent}% 💖`;
+      }
+
+
+      let memoryGameData = [];
+      let selectedCards = [];
+      let matchedPairs = 0;
+
+      function startMemoryGame() {
+        const cardValues = ["🍎", "🍌", "🍇", "🍉", "🍓", "🍊", "🍒", "🍍"];
+        memoryGameData = [...cardValues, ...cardValues]; // Duplicate for pairs
+        memoryGameData.sort(() => 0.5 - Math.random()); // Shuffle cards
+        const memoryGame = document.getElementById("memoryGame");
+        memoryGame.innerHTML = ""; // Clear previous game
+        matchedPairs = 0;
+
+        memoryGameData.forEach((value, index) => {
+          const card = document.createElement("div");
+          card.className =
+            "bg-pink-200 h-20 flex items-center justify-center text-3xl cursor-pointer";
+          card.setAttribute("data-index", index);
+          card.addEventListener("click", () => selectCard(card, value));
+          memoryGame.appendChild(card);
+        });
+      }
+
+      function selectCard(card, value) {
+        if (selectedCards.length < 2 && !card.classList.contains("matched")) {
+          card.textContent = value; // Show card value
+          selectedCards.push({ card, value });
+
+          if (selectedCards.length === 2) {
+            setTimeout(checkMatch, 1000);
+          }
+        }
+      }
+
+      function checkMatch() {
+        const [first, second] = selectedCards;
+        if (first.value === second.value) {
+          first.card.classList.add("matched");
+          second.card.classList.add("matched");
+          matchedPairs++;
+          if (matchedPairs === memoryGameData.length / 2) {
+            document.getElementById("memoryGameResult").textContent =
+              "Congratulations! You matched all pairs! 🎉";
+          }
+        } else {
+          first.card.textContent = "";
+          second.card.textContent = "";
+        }
+        selectedCards = []; // Reset selected cards
+      }
+
+      function toggleNoteForm() {
+        const notePopup = document.getElementById("notePopup");
+        notePopup.style.display =
+          notePopup.style.display === "block" ? "none" : "block";
+      }
+
+      function closeNotePopup() {
+        document.getElementById("notePopup").style.display = "none";
+      }
+
+      function launchConfetti() {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+        });
+      }
+
+      function submitMessage(e) {
+        e.preventDefault();
+        const nama = document.getElementById("nama").value;
+        const pesan = document.getElementById("pesan").value;
+
+        fetch("https://script.google.com/macros/s/AKfycbyxXrOuLBegxicGa1AGnGcwlIHoW2Na6u_2vUdve-CwEbFT1FdZHF5sYQJQOvzI-Iu39A/exec", {
+          method: "POST",
+          body: JSON.stringify({
+            name: nama,
+            message: pesan,
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            alert("Pesanmu sudah terkirim 💌");
+            document.getElementById("noteForm").reset();            })
+          .catch((err) => {
+            alert("Gagal mengirim pesan. Coba lagi ya 😢");
+            console.error(err);
+          });
+      }
+    </script>
+  </body>
+</html>
